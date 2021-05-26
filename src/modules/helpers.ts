@@ -3,7 +3,7 @@ import axios from 'axios';
 import localAxios from '../axios';
 import { BillboardTrack, Genres, PieChartDataItem, TagsData } from './types';
 
-const lastfmAPIKey = 'd50ed4606a5fa32f90c6848b546fc8e6';
+const lastfmAPIKey = process.env.REACT_APP_LASTFM_API_KEY;
 
 export const getTagsForSongUrl = (artist: string, trackName: string) => {
 	const formattedArtist = artist.split(' Featuring')[0].split(' &')[0];
@@ -89,13 +89,9 @@ export const countGenres = (billboardList: BillboardTrack[]): Genres => {
 	return genres;
 };
 
-// legitimacyThreshold === ile razy przynajmniej tag musi zostać powtórzonym żeby zostać potraktowanym jako prawdziwy gatunek
+// legitimacyThreshold === ile razy tag musi zostać powtórzonym żeby zostać potraktowanym jako prawdziwy gatunek
 // domyślnie 0, czyli każdy tag jest traktowany jako gatunek
-export const formatGenresToChartData = (
-	genres: Genres,
-	countOther: boolean = false,
-	legitimacyThreshold: number = 0
-): PieChartDataItem[] => {
+export const formatGenresToChartData = (genres: Genres, countOther = false, legitimacyThreshold = 0): PieChartDataItem[] => {
 	let extraOthers = 0;
 
 	const data: PieChartDataItem[] = Object.entries(genres)

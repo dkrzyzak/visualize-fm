@@ -2,11 +2,11 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import { BillboardTrack } from '../modules/types';
 
-interface Top100TableProps {
+interface Hot100TableProps {
 	songsList: BillboardTrack[];
 }
 
-const Top100Table: React.FC<Top100TableProps> = ({ songsList }) => {
+const Top100Table: React.FC<Hot100TableProps> = ({ songsList }) => {
 	return (
 		<Table striped bordered hover>
 			<thead>
