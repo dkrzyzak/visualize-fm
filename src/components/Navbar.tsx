@@ -11,7 +11,7 @@ const TopBar: React.FC = () => {
 			</Navbar.Brand>
 			<Nav className='mr-auto'>
 				<LinkContainer to='/'>
-					<Nav.Link>Home</Nav.Link>
+					<Nav.Link>Hot 100</Nav.Link>
 				</LinkContainer>
 				<LinkContainer to='/seasons'>
 					<Nav.Link>Preferencje względem pór roku</Nav.Link>

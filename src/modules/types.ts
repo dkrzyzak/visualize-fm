@@ -1,9 +1,15 @@
-export interface BillboardTrack {
+export interface BillboardTrackApi {
 	artist: string;
 	title: string;
 	cover: string;
 	rank: number;
 	position: object;
+}
+
+export interface BillboardTrack {
+	artist: string;
+	title: string;
+	rank: number;
 	topGenre: string;
 }
 

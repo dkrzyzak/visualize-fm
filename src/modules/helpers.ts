@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import axios from 'axios';
 import localAxios from '../axios';
-import { BillboardTrack, Genres, PieChartDataItem, TagsData } from './types';
+import { BillboardTrack, BillboardTrackApi, Genres, PieChartDataItem, TagsData } from './types';
 
 const lastfmAPIKey = process.env.REACT_APP_LASTFM_API_KEY;
 
@@ -13,7 +13,6 @@ export const getTagsForSongUrl = (artist: string, trackName: string) => {
 	return `http://ws.audioscrobbler.com/2.0/?method=track.getTopTags&api_key=${lastfmAPIKey}&artist=${artistUri}&track=${trackUri}&format=json`;
 };
 
-// TODO: przepatrzeć różne charty i spróbować uporządkować niektóre rzeczy
 export const validateTag = (tagName: string) => {
 	// ujednolicenie hip-hop oraz hip hop, traktowanie rapu jako hip-hop (nie dzwońcie na policję)
 	if (tagName === 'hip hop' || tagName === 'hiphop' || tagName.includes('rap')) {
@@ -47,27 +46,40 @@ export const validateTag = (tagName: string) => {
 };
 
 export const fetch100 = async (startDate: Date): Promise<BillboardTrack[]> => {
+	// zapytanie do lokalnego api po listę hot100 dla danego tygodnia
 	const formattedDate = dayjs(startDate).format('YYYY-MM-DD');
-	const { data: billboardList } = await localAxios.get<BillboardTrack[]>(`/billboard100?date=${formattedDate}`);
+	const { data: billboardList } = await localAxios.get<BillboardTrackApi[]>(`/billboard100?date=${formattedDate}`);
 
 	const dataWithTags = await Promise.all(
-		billboardList.map(async (song) => {
-			const url = getTagsForSongUrl(song.artist, song.title);
+		billboardList.map(async ({ artist, title, rank }) => {
+			// nie potrzebujemy wszystkich pól które dostarcza nam api, potrzebujemy tylko artist, title oraz rank
+			// więc mapujemy ten duży obiekt na nieco mniejszy, zawierający tylko te dane które potrzebujemy (+ pobieramy informację co do gatunku)
+			const formattedSong: BillboardTrack = {
+				artist,
+				title,
+				rank,
+				topGenre: '',
+			};
+
+			const url = getTagsForSongUrl(artist, title);
 			try {
+				// pobieranie danych o tagach danej piosenki z api last.fm
 				const { data: tags } = await axios.get<TagsData>(url);
 
 				// jeśli dostaniemy błąd z serwera lub lista tagów będzie pusta, to ustawiamy gatunek na other
 				if (tags.hasOwnProperty('error') || !tags.toptags?.tag?.length) {
-					song.topGenre = 'other';
-					return song;
+					formattedSong.topGenre = 'other';
+					return formattedSong;
 				}
 
+				// przepuszczamy otrzymany najpopularniejszy tag przez walidator
 				const validatedTag = validateTag(tags.toptags.tag[0].name.toLowerCase());
-				song.topGenre = validatedTag;
-				return song;
+				formattedSong.topGenre = validatedTag;
+				return formattedSong;
 			} catch (e) {
-				song.topGenre = 'other';
-				return song;
+				// jeśli wystąpi błąd zapytania to ustawiamy gatunek piosenki na other
+				formattedSong.topGenre = 'other';
+				return formattedSong;
 			}
 		})
 	);
@@ -116,7 +128,39 @@ export const formatGenresToChartData = (genres: Genres, countOther = false, legi
 	}
 
 	data.sort((a, b) => b.value - a.value);
-	console.log(data);
 
 	return countOther ? data : data.filter((el) => el.id !== 'other');
 };
+
+interface TopWeekGenre {
+	week: string;
+	topGenre: string;
+}
+
+export const getTopGenresForYear = async (year: number) => {
+	const firstDayOfYear = dayjs(`${year}-01-01`);
+
+	let currentWeek = firstDayOfYear;
+	const weeks: TopWeekGenre[] = [];
+
+	while (currentWeek.year() === year) {
+		const fetchedList = await fetch100(currentWeek.toDate());
+		const genres = countGenres(fetchedList);
+		delete genres.other;
+		console.log(genres);
+
+		const topGenre = Object.entries(genres);
+
+		const tmp1 = topGenre.map(([key, value]) => ({ genre: key, value }));
+		const tmp2 = tmp1.sort((a, b) => b.value - a.value);
+		const tmp3 = tmp2[0].genre;
+		console.log(tmp1, tmp2, tmp3);
+
+		weeks.push({ week: currentWeek.format('DD/MM/YYYY'), topGenre: tmp3 });
+		currentWeek = currentWeek.add(1, 'week');
+	}
+
+	return weeks;
+};
+
+export const formatTopGenresToChartData = () => {};

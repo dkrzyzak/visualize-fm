@@ -9,15 +9,15 @@ router.get('/billboard100', (req, res) => {
 
 	getChart('hot-100', chartDate, (err, chart) => {
 		if (err) {
-			console.log(err);
-			res.status(500).end();
+			console.log('Wystąpił błąd', err);
+			return res.send([]);
 		}
 
 		if (!chart) {
-			res.send([]);
+			return res.send([]);
 		}
 
-		res.status(200).send(chart.songs);
+		return res.status(200).send(chart.songs);
 	});
 });
 
