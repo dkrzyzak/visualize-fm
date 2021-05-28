@@ -35,3 +35,21 @@ export interface PieChartDataItem {
 	label: string;
 	value: number;
 }
+
+export interface SummedGenre {
+	genre: string;
+	count: number;
+}
+
+export interface TopGenresPerYear {
+	year: number;
+	genres: SummedGenre[];
+}
+
+export interface BumpChartDataItem {
+	id: string;
+	data: Array<{
+		x: number;
+		y: number;
+	}>;
+}

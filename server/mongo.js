@@ -13,14 +13,19 @@ const db = mongoose.connection;
 
 // MODELS AND SCHEMAS
 
-const userSchema = new Schema({
-	name: String,
-	password: String,
+const topGenresSchema = new Schema({
+	year: Number,
+	genres: [
+		{
+			genre: String,
+			count: Number,
+		},
+	],
 });
 
-const UserModel = mongoose.model('users', userSchema);
+const TopGenresPerYear = mongoose.model('topGenresPerYear', topGenresSchema);
 
 module.exports = {
 	db,
-	UserModel,
+	TopGenresPerYear,
 };

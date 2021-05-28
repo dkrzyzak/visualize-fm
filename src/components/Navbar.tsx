@@ -13,9 +13,9 @@ const TopBar: React.FC = () => {
 				<LinkContainer to='/'>
 					<Nav.Link>Hot 100</Nav.Link>
 				</LinkContainer>
-				<LinkContainer to='/seasons'>
+				{/* <LinkContainer to='/seasons'>
 					<Nav.Link>Preferencje względem pór roku</Nav.Link>
-				</LinkContainer>
+				</LinkContainer> */}
 				<LinkContainer to='/top-genres'>
 					<Nav.Link>Najpopularniejsze gatunki w ciągu roku</Nav.Link>
 				</LinkContainer>

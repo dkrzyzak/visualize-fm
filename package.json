@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@nivo/bump": "^0.70.1",
 		"@nivo/core": "^0.69.0",
 		"@nivo/pie": "^0.70.0",
 		"axios": "^0.21.1",

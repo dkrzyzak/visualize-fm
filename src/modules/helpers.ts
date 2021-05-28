@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import axios from 'axios';
 import localAxios from '../axios';
-import { BillboardTrack, BillboardTrackApi, Genres, PieChartDataItem, TagsData } from './types';
+import { BillboardTrack, BillboardTrackApi, BumpChartDataItem, Genres, PieChartDataItem, TagsData, TopGenresPerYear } from './types';
 
 const lastfmAPIKey = process.env.REACT_APP_LASTFM_API_KEY;
 
@@ -25,6 +25,15 @@ export const validateTag = (tagName: string) => {
 
 	if (tagName.includes('rock')) {
 		return 'rock';
+	}
+
+	if (tagName.includes('metal')) {
+		return 'metal';
+	}
+
+	// for neo-soul
+	if (tagName.includes('soul')) {
+		return 'soul';
 	}
 
 	// ujednolicenie r&b oraz rnb
@@ -132,35 +141,91 @@ export const formatGenresToChartData = (genres: Genres, countOther = false, legi
 	return countOther ? data : data.filter((el) => el.id !== 'other');
 };
 
-interface TopWeekGenre {
-	week: string;
-	topGenre: string;
+interface GenreCounted {
+	genre: string;
+	count: number;
 }
 
 export const getTopGenresForYear = async (year: number) => {
 	const firstDayOfYear = dayjs(`${year}-01-01`);
 
 	let currentWeek = firstDayOfYear;
-	const weeks: TopWeekGenre[] = [];
+	const genresSummedUp: Genres = {};
 
 	while (currentWeek.year() === year) {
 		const fetchedList = await fetch100(currentWeek.toDate());
 		const genres = countGenres(fetchedList);
 		delete genres.other;
+
 		console.log(genres);
 
-		const topGenre = Object.entries(genres);
+		Object.entries(genres).forEach(([genreName, genreCount]) => {
+			if (genresSummedUp.hasOwnProperty(genreName)) {
+				genresSummedUp[genreName] += genreCount;
+			} else {
+				genresSummedUp[genreName] = genreCount;
+			}
+		});
 
-		const tmp1 = topGenre.map(([key, value]) => ({ genre: key, value }));
-		const tmp2 = tmp1.sort((a, b) => b.value - a.value);
-		const tmp3 = tmp2[0].genre;
-		console.log(tmp1, tmp2, tmp3);
-
-		weeks.push({ week: currentWeek.format('DD/MM/YYYY'), topGenre: tmp3 });
 		currentWeek = currentWeek.add(1, 'week');
 	}
 
-	return weeks;
+	const topGenres: GenreCounted[] = Object.entries(genresSummedUp).map(([genreName, genreValue]) => ({
+		genre: genreName,
+		count: genreValue,
+	}));
+
+	topGenres.sort((a, b) => b.count - a.count);
+	console.log(topGenres);
+
+	return topGenres;
 };
 
-export const formatTopGenresToChartData = () => {};
+const getThatData = async (year: number) => {
+	const x = await getTopGenresForYear(year);
+	console.log(x);
+	const y = await localAxios.post(`/topGenresPerYear/${year}`, x);
+
+	console.log(y.status);
+};
+
+// (async () => {
+// 	for (let i = 1970; i < 2021; i++) {
+// 		await getThatData(i);
+// 	}
+// })();
+
+export const formatTopGenresForChart = (topList: TopGenresPerYear[]): BumpChartDataItem[] => {
+	const setOfGenres = new Set<string>();
+	topList.forEach((year) => {
+		year.genres.length = 5;
+		year.genres.forEach((genreSummary) => setOfGenres.add(genreSummary.genre));
+	});
+
+	topList.forEach((year) => {
+		setOfGenres.forEach((genreName) => {
+			if (year.genres.findIndex((el) => el.genre === genreName) === -1) {
+				year.genres.push({ genre: genreName, count: 0 });
+			}
+		});
+	});
+
+	const result = Array.from(setOfGenres).map((genreName) => {
+		const data = topList.map((yearSummary) => {
+			return {
+				x: yearSummary.year,
+				y: yearSummary.genres.findIndex((genre) => genre.genre === genreName) + 1,
+			};
+		});
+
+		return {
+			id: genreName,
+			data: data,
+		};
+	});
+
+	console.log(setOfGenres);
+	console.log(topList);
+
+	return result;
+};
