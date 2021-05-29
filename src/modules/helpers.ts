@@ -19,7 +19,7 @@ export const getTagsForSongUrl = (artist: string, trackName: string) => {
 	const artistUri = encodeURI(formattedArtist);
 	const trackUri = encodeURI(trackName);
 
-	return `http://ws.audioscrobbler.com/2.0/?method=track.getTopTags&api_key=${lastfmAPIKey}&artist=${artistUri}&track=${trackUri}&format=json`;
+	return `https://ws.audioscrobbler.com/2.0/?method=track.getTopTags&api_key=${lastfmAPIKey}&artist=${artistUri}&track=${trackUri}&format=json`;
 };
 
 export const validateTag = (tagName: string) => {
