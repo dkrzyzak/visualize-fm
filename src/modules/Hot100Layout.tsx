@@ -44,12 +44,12 @@ const Top100Layout: React.FC = () => {
 				<Col xs={5}>
 					<DatePicker onChange={(value: Date) => setStartDate(value)} value={startDate} label='Podaj datę' />
 				</Col>
-				<Col xs={4} style={{ display: 'flex', alignItems: 'flex-end' }}>
+				<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
 					<CheckboxToggle label='Traktuj "other" jako gatunek' value={countOther} onChange={onToggleChange} />
 				</Col>
 
-				<Col xs={3}>
-					<Button className='mt-4' onClick={onGenerateBtnClick}>
+				<Col xs={4}>
+					<Button style={{ width: 200, padding: '10px inherit' }} className='mt-4' onClick={onGenerateBtnClick}>
 						Pobierz listę!
 					</Button>
 				</Col>

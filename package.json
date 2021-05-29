@@ -3,9 +3,9 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@nivo/bump": "^0.70.1",
+		"@nivo/bump": "^0.69.0",
 		"@nivo/core": "^0.69.0",
-		"@nivo/pie": "^0.70.0",
+		"@nivo/pie": "^0.69.0",
 		"axios": "^0.21.1",
 		"billboard-top-100": "^2.5.9",
 		"cors": "^2.8.5",

@@ -8,7 +8,7 @@ interface PieChartProps {
 
 const PieChart: React.FC<PieChartProps> = ({ data }) => {
 	return (
-		<div style={{ width: 1000, height: 500 }}>
+		<div style={{ width: 1080, height: 500, marginTop: 30 }}>
 			<ResponsivePie
 				data={data}
 				margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -47,80 +47,21 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
 				fill={[
 					{
 						match: {
-							id: 'ruby',
+							id: 'pop',
 						},
 						id: 'dots',
 					},
 					{
 						match: {
-							id: 'c',
-						},
-						id: 'dots',
-					},
-					{
-						match: {
-							id: 'go',
-						},
-						id: 'dots',
-					},
-					{
-						match: {
-							id: 'python',
-						},
-						id: 'dots',
-					},
-					{
-						match: {
-							id: 'scala',
-						},
-						id: 'lines',
-					},
-					{
-						match: {
-							id: 'lisp',
-						},
-						id: 'lines',
-					},
-					{
-						match: {
-							id: 'elixir',
-						},
-						id: 'lines',
-					},
-					{
-						match: {
-							id: 'javascript',
+							id: 'hip-hop',
 						},
 						id: 'lines',
 					},
 				]}
-				legends={
-					[
-						// {
-						// 	anchor: 'bottom',
-						// 	direction: 'row',
-						// 	justify: false,
-						// 	translateX: 0,
-						// 	translateY: 56,
-						// 	itemsSpacing: 0,
-						// 	itemWidth: 100,
-						// 	itemHeight: 18,
-						// 	itemTextColor: '#999',
-						// 	itemDirection: 'left-to-right',
-						// 	itemOpacity: 1,
-						// 	symbolSize: 18,
-						// 	symbolShape: 'circle',
-						// 	effects: [
-						// 		{
-						// 			on: 'hover',
-						// 			style: {
-						// 				itemTextColor: '#000',
-						// 			},
-						// 		},
-						// 	],
-						// },
-					]
-				}
+				theme={{
+					fontSize: 20,
+					// fontFamily: 'Makhina',
+				}}
 			/>
 		</div>
 	);

@@ -9,17 +9,18 @@ const wrapperStyles: React.CSSProperties = {
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',
+	marginTop: 200,
 };
 
 const spinnerStyles: React.CSSProperties = {
 	width: '8rem',
 	height: '8rem',
-	borderWidth: '1rem',
+	borderWidth: '0.75rem',
 };
 
 const AsyncWrapper: React.FC<AsyncWrapperProps> = ({ isFetching, children }) => {
 	return isFetching ? (
-		<div className='mt-4' style={wrapperStyles}>
+		<div style={wrapperStyles}>
 			<Spinner style={spinnerStyles} animation='border' />
 		</div>
 	) : (

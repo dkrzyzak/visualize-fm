@@ -190,7 +190,7 @@ const getThatData = async (year: number) => {
 };
 
 // (async () => {
-// 	for (let i = 1970; i < 2021; i++) {
+// 	for (let i = 1996; i < 2021; i++) {
 // 		await getThatData(i);
 // 	}
 // })();
