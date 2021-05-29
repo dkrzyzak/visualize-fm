@@ -47,4 +47,12 @@ router.get('/topGenresPerYear/:startYear', async (req, res) => {
 	}
 });
 
+router.get('/getPort', (req, res) => res.send(process.env.PORT));
+
+router.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, '../build/index.html'));
+});
+
+router.get('/*', (req, res) => res.redirect('/'));
+
 module.exports = router;

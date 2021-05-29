@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/', router);
 
-const port = process.env.REACT_APP_API_PORT;
+const port = process.env.PORT || process.env.REACT_APP_API_PORT;
 app.listen(port, () => {
 	console.log('serwer startuje na porcie ' + port);
 });
