@@ -204,3 +204,44 @@ export const formatTopGenresForBumpChart = (topList: TopGenresPerYear[]): BumpCh
 
 	return result;
 };
+
+// const genresForComparison = [
+// 	'pop',
+// 	'hip-hop',
+// 	'rock',
+// 	'country',
+// 	'r&b',
+// 	'jazz',
+// 	'funk',
+// 	'soul',
+// 	'disco',
+// 	'folk',
+// 	'dance',
+// 	'metal',
+// 	'new wave',
+// 	'indie',
+// 	'alternative',
+// 	'electronic',
+// ];
+
+// export const formatDataForLineChart = (allYearsList: TopGenresPerYear[]): Serie[] => {
+// 	const result = genresForComparison.map((genreName) => {
+// 		const data: Datum[] = [];
+// 		allYearsList.forEach((yearSummary) => {
+// 			const genreIndex = yearSummary.genres.findIndex((genre) => genre.genre === genreName);
+// 			const y = genreIndex < 0 || genreIndex > 14 ? 15 : genreIndex + 1;
+
+// 			data.push({
+// 				x: yearSummary.year,
+// 				y: y,
+// 			});
+// 		});
+
+// 		return {
+// 			id: genreName,
+// 			data: data,
+// 		};
+// 	});
+
+// 	return result;
+// };

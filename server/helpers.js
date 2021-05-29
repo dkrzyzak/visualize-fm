@@ -29,6 +29,48 @@ const get100List = (chartDate, repeatTimes = 1) =>
 		}, 3000);
 	});
 
+const genresForComparison = [
+	'pop',
+	'hip-hop',
+	'rock',
+	'country',
+	'r&b',
+	'jazz',
+	'funk',
+	'soul',
+	'disco',
+	'folk',
+	'dance',
+	'metal',
+	'new wave',
+	'indie',
+	'alternative',
+	'electronic',
+];
+
+const formatDataForLineChart = (allYearsList) => {
+	const result = genresForComparison.map((genreName) => {
+		const data = [];
+		allYearsList.forEach((yearSummary) => {
+			const genreIndex = yearSummary.genres.findIndex((genre) => genre.genre === genreName);
+			const y = genreIndex < 0 || genreIndex > 14 ? 15 : genreIndex + 1;
+
+			data.push({
+				x: yearSummary.year,
+				y: y,
+			});
+		});
+
+		return {
+			id: genreName,
+			data: data,
+		};
+	});
+
+	return result;
+};
+
 module.exports = {
 	get100List,
+	formatDataForLineChart,
 };

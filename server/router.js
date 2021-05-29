@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const { getChart } = require('billboard-top-100');
 const { TopGenresPerYear } = require('./mongo');
+const { formatDataForLineChart } = require('./helpers');
 
 const router = express.Router();
 
@@ -44,6 +45,17 @@ router.get('/topGenresPerYear/:startYear', async (req, res) => {
 	try {
 		const x = await TopGenresPerYear.find({ year: { $gte: startYear, $lt: startYear + yearRange } });
 		res.send(x).end();
+	} catch (e) {
+		console.log(e);
+		return res.status(500).end();
+	}
+});
+
+router.get('/topGenresPerYear', async (req, res) => {
+	try {
+		const x = await TopGenresPerYear.find();
+		const formattedData = formatDataForLineChart(x);
+		res.send(formattedData).end();
 	} catch (e) {
 		console.log(e);
 		return res.status(500).end();

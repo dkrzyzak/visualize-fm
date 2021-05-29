@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Jumbotron, Row } from 'react-bootstrap';
 import { Slider } from 'react-rainbow-components';
+import { Serie } from '@nivo/line';
 import localAxios from '../axios';
 import AsyncWrapper from '../components/AsyncWrapper';
 import BumpChart from '../components/BumpChart';
+import LineChart from '../components/LineChart';
 import { cleanDbDataFromUnnecessaryBs, formatTopGenresForBumpChart } from './helpers';
 import { BumpChartDataItem, TopGenresPerYearFromDb } from './types';
 
@@ -11,7 +13,9 @@ const TopGenresPerYearLayout: React.FC = () => {
 	const [year, setYear] = useState(1985);
 	const [yearRange, setYearRange] = useState(5);
 	const [isFetching, setFetching] = useState(false);
+	const [isFetchingAllTime, setFetchingAllTime] = useState(false);
 	const [topGenresList, setTopList] = useState<BumpChartDataItem[]>([]);
+	const [allTimeComparisonList, setAllTimeList] = useState<Serie[]>([]);
 
 	const getTopGenresStartingYear = async () => {
 		setFetching(true);
@@ -27,6 +31,19 @@ const TopGenresPerYearLayout: React.FC = () => {
 		}
 	};
 
+	const getAllTimeGenresSummary = async () => {
+		setFetchingAllTime(true);
+
+		try {
+			const { data } = await localAxios.get<Serie[]>(`/topGenresPerYear`);
+			setAllTimeList(data);
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setFetchingAllTime(false);
+		}
+	};
+
 	const onChangeYear = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setYear(+event.target.value);
 	};
@@ -34,6 +51,11 @@ const TopGenresPerYearLayout: React.FC = () => {
 	const onChangeYearRange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setYearRange(+event.target.value);
 	};
+
+	useEffect(() => {
+		getTopGenresStartingYear();
+		getAllTimeGenresSummary();
+	}, []);
 
 	return (
 		<>
@@ -45,7 +67,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 
 				<Row>
 					<Col xs={7}>
-						<Slider label='Wybierz rok początkowy' min={1960} max={2016} step={1} value={year} onChange={onChangeYear} />
+						<Slider label='Wybierz rok początkowy' min={1960} max={2021 - yearRange} step={1} value={year} onChange={onChangeYear} />
 					</Col>
 					<Col xs={2}>
 						<Slider label='Długość przedziału' min={4} max={8} step={1} value={yearRange} onChange={onChangeYearRange} />
@@ -62,6 +84,31 @@ const TopGenresPerYearLayout: React.FC = () => {
 				{topGenresList.length > 0 && (
 					<div>
 						<BumpChart data={topGenresList} />
+					</div>
+				)}
+			</AsyncWrapper>
+
+			<Container>
+				<Jumbotron style={{ padding: '3rem 2rem' }}>
+					<h1>Work In Progress</h1>
+					<h6>&nbsp;</h6>
+				</Jumbotron>
+
+				<Row>
+					<Col xs={7}></Col>
+					<Col xs={2}></Col>
+					<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
+						<Button style={{ width: 200, padding: '10px inherit' }} onClick={getTopGenresStartingYear}>
+							Temp button
+						</Button>
+					</Col>
+				</Row>
+			</Container>
+
+			<AsyncWrapper isFetching={isFetchingAllTime}>
+				{allTimeComparisonList.length > 0 && (
+					<div>
+						<LineChart data={allTimeComparisonList} />
 					</div>
 				)}
 			</AsyncWrapper>
