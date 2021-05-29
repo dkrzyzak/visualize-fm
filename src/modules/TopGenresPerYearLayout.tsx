@@ -20,7 +20,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 			const formattedData = formatTopGenresForBumpChart(cleanedUpData);
 			setTopList(formattedData);
 		} catch (error) {
-			return [];
+			console.log(error);
 		} finally {
 			setFetching(false);
 		}
