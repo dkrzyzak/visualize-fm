@@ -34,8 +34,8 @@ const TopGenresPerYearLayout: React.FC = () => {
 		<>
 			<Container>
 				<Jumbotron style={{ padding: '3rem 2rem' }}>
-					<h1>Jak zmieniały się najpopularniejsze gatunki?</h1>
-					<h6>Wybierz rok, i zobacz jak preferencje słuchaczy zmieniały się na przestrzeni 5 lat od wybranego roku</h6>
+					<h1>Jak zmieniała się popularność gatunków?</h1>
+					<h6>Wybierz rok i zobacz, jak preferencje słuchaczy zmieniały się w ciągu 5 lat od wybranego roku</h6>
 				</Jumbotron>
 
 				<Row>

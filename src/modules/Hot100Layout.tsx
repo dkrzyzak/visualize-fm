@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Jumbotron, Row } from 'react-bootstrap';
 import { DatePicker, CheckboxToggle } from 'react-rainbow-components';
+import dayjs from 'dayjs';
 import AsyncWrapper from '../components/AsyncWrapper';
 import PieChart from '../components/PieChart';
 import Hot100Table from '../components/Hot100Table';
 import { countGenres, fetch100, formatGenresToPieChartData } from './helpers';
 import { BillboardTrack } from './types';
+
+const minDate = dayjs('1958-08-04').toDate();
 
 const Top100Layout: React.FC = () => {
 	const [startDate, setStartDate] = useState(new Date());
@@ -33,15 +36,21 @@ const Top100Layout: React.FC = () => {
 		<Container>
 			<Jumbotron style={{ padding: '3rem 2rem' }}>
 				<h1>Billboard Hot 100</h1>
-				<h6>Lista Billboard Hot 100 dla wybranego tygodnia oraz wykres popularności gatunków</h6>
+				<h6>Wykres popularności gatunków w danym tygodniu na podstawie listy wyświetlanej poniżej</h6>
 			</Jumbotron>
 
 			<Row>
 				<Col xs={5}>
-					<DatePicker onChange={(value: Date) => setStartDate(value)} value={startDate} label='Podaj datę' />
+					<DatePicker
+						label={<span style={{ textTransform: 'none' }}>Podaj datę</span>}
+						value={startDate}
+						minDate={minDate}
+						maxDate={new Date()}
+						onChange={(value: Date) => setStartDate(value)}
+					/>
 				</Col>
 				<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
-					<CheckboxToggle label='Traktuj "other" jako gatunek' value={countOther} onChange={onToggleChange} />
+					<CheckboxToggle label='Traktuj „other” jako gatunek' value={countOther} onChange={onToggleChange} />
 				</Col>
 
 				<Col xs={4}>

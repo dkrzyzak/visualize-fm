@@ -18,8 +18,8 @@ const Top100Table: React.FC<Hot100TableProps> = ({ songsList }) => {
 				</tr>
 			</thead>
 			<tbody>
-				{songsList.map((song) => (
-					<tr key={song.rank}>
+				{songsList.map((song, idx) => (
+					<tr key={idx}>
 						<td>{song.rank}</td>
 						<td>{song.artist}</td>
 						<td>{song.title}</td>
