@@ -112,7 +112,7 @@ export const countGenres = (billboardList: BillboardTrack[]): Genres => {
 
 // legitimacyThreshold === ile razy tag musi zostać powtórzonym żeby zostać potraktowanym jako prawdziwy gatunek
 // domyślnie 0, czyli każdy tag jest traktowany jako gatunek
-export const formatGenresToChartData = (genres: Genres, countOther = false, legitimacyThreshold = 0): PieChartDataItem[] => {
+export const formatGenresToPieChartData = (genres: Genres, countOther = false, legitimacyThreshold = 0): PieChartDataItem[] => {
 	let extraOthers = 0;
 
 	const data: PieChartDataItem[] = Object.entries(genres)
@@ -141,61 +141,7 @@ export const formatGenresToChartData = (genres: Genres, countOther = false, legi
 	return countOther ? data : data.filter((el) => el.id !== 'other');
 };
 
-interface GenreCounted {
-	genre: string;
-	count: number;
-}
-
-export const getTopGenresForYear = async (year: number) => {
-	const firstDayOfYear = dayjs(`${year}-01-01`);
-
-	let currentWeek = firstDayOfYear;
-	const genresSummedUp: Genres = {};
-
-	while (currentWeek.year() === year) {
-		const fetchedList = await fetch100(currentWeek.toDate());
-		const genres = countGenres(fetchedList);
-		delete genres.other;
-
-		console.log(genres);
-
-		Object.entries(genres).forEach(([genreName, genreCount]) => {
-			if (genresSummedUp.hasOwnProperty(genreName)) {
-				genresSummedUp[genreName] += genreCount;
-			} else {
-				genresSummedUp[genreName] = genreCount;
-			}
-		});
-
-		currentWeek = currentWeek.add(1, 'week');
-	}
-
-	const topGenres: GenreCounted[] = Object.entries(genresSummedUp).map(([genreName, genreValue]) => ({
-		genre: genreName,
-		count: genreValue,
-	}));
-
-	topGenres.sort((a, b) => b.count - a.count);
-	console.log(topGenres);
-
-	return topGenres;
-};
-
-const getThatData = async (year: number) => {
-	const x = await getTopGenresForYear(year);
-	console.log(x);
-	const y = await localAxios.post(`/topGenresPerYear/${year}`, x);
-
-	console.log(y.status);
-};
-
-// (async () => {
-// 	for (let i = 1996; i < 2021; i++) {
-// 		await getThatData(i);
-// 	}
-// })();
-
-export const formatTopGenresForChart = (topList: TopGenresPerYear[]): BumpChartDataItem[] => {
+export const formatTopGenresForBumpChart = (topList: TopGenresPerYear[]): BumpChartDataItem[] => {
 	const setOfGenres = new Set<string>();
 	topList.forEach((year) => {
 		year.genres.length = 5;

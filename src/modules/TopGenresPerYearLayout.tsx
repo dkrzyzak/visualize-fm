@@ -4,7 +4,7 @@ import { Slider } from 'react-rainbow-components';
 import localAxios from '../axios';
 import AsyncWrapper from '../components/AsyncWrapper';
 import BumpChart from '../components/BumpChart';
-import { formatTopGenresForChart } from './helpers';
+import { formatTopGenresForBumpChart } from './helpers';
 import { BumpChartDataItem, TopGenresPerYear } from './types';
 
 const TopGenresPerYearLayout: React.FC = () => {
@@ -16,7 +16,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 		setFetching(true);
 		try {
 			const { data } = await localAxios.get<TopGenresPerYear[]>(`/topGenresPerYear/${year}`);
-			const formattedData = formatTopGenresForChart(data);
+			const formattedData = formatTopGenresForBumpChart(data);
 			setTopList(formattedData);
 		} catch (error) {
 			return [];
@@ -39,7 +39,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 
 				<Row>
 					<Col xs={9}>
-						<Slider label='Wybierz rok początkowy' min={1960} max={1990} step={1} value={year} onChange={onChangeYear} />
+						<Slider label='Wybierz rok początkowy' min={1960} max={2016} step={1} value={year} onChange={onChangeYear} />
 					</Col>
 					<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
 						<Button style={{ width: 200, padding: '10px inherit' }} onClick={getTopGenresStartingYear}>

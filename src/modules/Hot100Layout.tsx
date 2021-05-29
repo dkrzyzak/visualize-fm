@@ -4,7 +4,7 @@ import { DatePicker, CheckboxToggle } from 'react-rainbow-components';
 import AsyncWrapper from '../components/AsyncWrapper';
 import PieChart from '../components/PieChart';
 import Hot100Table from '../components/Hot100Table';
-import { countGenres, fetch100, formatGenresToChartData } from './helpers';
+import { countGenres, fetch100, formatGenresToPieChartData } from './helpers';
 import { BillboardTrack } from './types';
 
 const Top100Layout: React.FC = () => {
@@ -57,7 +57,7 @@ const Top100Layout: React.FC = () => {
 			<AsyncWrapper isFetching={isFetching}>
 				{fetchedList.length > 0 && (
 					<div>
-						<PieChart data={formatGenresToChartData(countGenres(fetchedList), countOther, 2)} />
+						<PieChart data={formatGenresToPieChartData(countGenres(fetchedList), countOther, 2)} />
 						<Hot100Table songsList={fetchedList} />
 					</div>
 				)}
