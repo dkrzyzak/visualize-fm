@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const port = process.env.PORT || process.env.REACT_APP_API_PORT;
-const baseURL = `http://localhost:${port}`;
+const domain = process.env.REACT_APP_ON_HEROKU ? 'https://visualizefm.herokuapp.com' : 'http://localhost';
+const baseURL = `${domain}:${port}`;
 
 export const instance = axios.create({
 	baseURL,

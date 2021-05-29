@@ -1,5 +1,6 @@
 {
 	"name": "visualize-fm",
+	"main": "./server/server.js",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -59,5 +60,8 @@
 		"@types/react-router": "^5.1.14",
 		"@types/react-router-bootstrap": "^0.24.5",
 		"@types/react-router-dom": "^5.1.7"
+	},
+	"engines": {
+		"node": "10.x"
 	}
 }
