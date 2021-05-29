@@ -41,6 +41,17 @@ export interface SummedGenre {
 	count: number;
 }
 
+export interface TopGenresPerYearFromDb {
+	__v: number;
+	_id: string;
+	year: number;
+	genres: Array<{
+		_id?: string;
+		count: number;
+		genre: string;
+	}>;
+}
+
 export interface TopGenresPerYear {
 	year: number;
 	genres: SummedGenre[];

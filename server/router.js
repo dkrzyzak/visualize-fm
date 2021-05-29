@@ -1,6 +1,6 @@
 const express = require('express');
+const { getChart } = require('billboard-top-100');
 const { TopGenresPerYear } = require('./mongo');
-const { get100List } = require('./helpers');
 
 const router = express.Router();
 

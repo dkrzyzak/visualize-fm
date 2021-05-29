@@ -1,7 +1,16 @@
 import dayjs from 'dayjs';
 import axios from 'axios';
 import localAxios from '../axios';
-import { BillboardTrack, BillboardTrackApi, BumpChartDataItem, Genres, PieChartDataItem, TagsData, TopGenresPerYear } from './types';
+import {
+	BillboardTrack,
+	BillboardTrackApi,
+	BumpChartDataItem,
+	Genres,
+	PieChartDataItem,
+	TagsData,
+	TopGenresPerYear,
+	TopGenresPerYearFromDb,
+} from './types';
 
 const lastfmAPIKey = process.env.REACT_APP_LASTFM_API_KEY;
 
@@ -141,19 +150,40 @@ export const formatGenresToPieChartData = (genres: Genres, countOther = false, l
 	return countOther ? data : data.filter((el) => el.id !== 'other');
 };
 
+export const cleanDbDataFromUnnecessaryBs = (topGenresPerYearList: TopGenresPerYearFromDb[]): TopGenresPerYear[] => {
+	// usuwam pola "__v" oraz "_id" z obiektów, żeby w konsoli łatwiej mi się analizowało te dane
+
+	return topGenresPerYearList.map(({ genres, year }) => {
+		return {
+			year,
+			genres: genres.map(({ count, genre }) => ({ count, genre })),
+		};
+	});
+};
+
 export const formatTopGenresForBumpChart = (topList: TopGenresPerYear[]): BumpChartDataItem[] => {
+	// tworzę kopię oryginalnej listy (przyda się kawałek później)
+	const copyOfTopList: TopGenresPerYear[] = JSON.parse(JSON.stringify(topList));
+
+	// tworzę zbiór wszystkich gatunków które były w top5 na przestrzeni 5 lat
 	const setOfGenres = new Set<string>();
-	topList.forEach((year) => {
-		year.genres.length = 5;
-		year.genres.forEach((genreSummary) => setOfGenres.add(genreSummary.genre));
+
+	topList.forEach((yearSummary: TopGenresPerYear) => {
+		yearSummary.genres.length = 5;
+		yearSummary.genres.forEach((genreSummary) => setOfGenres.add(genreSummary.genre));
 	});
 
-	topList.forEach((year) => {
+	topList.forEach((yearSummary: TopGenresPerYear) => {
 		setOfGenres.forEach((genreName) => {
-			if (year.genres.findIndex((el) => el.genre === genreName) === -1) {
-				year.genres.push({ genre: genreName, count: 0 });
+			if (yearSummary.genres.findIndex((el) => el.genre === genreName) === -1) {
+				yearSummary.genres.push({
+					genre: genreName,
+					count: copyOfTopList.find((el) => el.year === yearSummary.year)?.genres.find((el) => el.genre === genreName)?.count ?? 0,
+				});
 			}
 		});
+
+		yearSummary.genres.sort((a, b) => b.count - a.count);
 	});
 
 	const result = Array.from(setOfGenres).map((genreName) => {
@@ -170,7 +200,6 @@ export const formatTopGenresForBumpChart = (topList: TopGenresPerYear[]): BumpCh
 		};
 	});
 
-	console.log(setOfGenres);
 	console.log(topList);
 
 	return result;

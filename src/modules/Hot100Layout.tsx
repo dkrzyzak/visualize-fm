@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Container, Jumbotron, Row } from 'react-bootstrap';
 import { DatePicker, CheckboxToggle } from 'react-rainbow-components';
 import AsyncWrapper from '../components/AsyncWrapper';
@@ -28,10 +28,6 @@ const Top100Layout: React.FC = () => {
 	const onToggleChange = () => {
 		setCountOther((currentValue) => !currentValue);
 	};
-
-	useEffect(() => {
-		console.log(startDate);
-	}, [startDate]);
 
 	return (
 		<Container>

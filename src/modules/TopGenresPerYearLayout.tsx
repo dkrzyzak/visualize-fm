@@ -4,8 +4,8 @@ import { Slider } from 'react-rainbow-components';
 import localAxios from '../axios';
 import AsyncWrapper from '../components/AsyncWrapper';
 import BumpChart from '../components/BumpChart';
-import { formatTopGenresForBumpChart } from './helpers';
-import { BumpChartDataItem, TopGenresPerYear } from './types';
+import { cleanDbDataFromUnnecessaryBs, formatTopGenresForBumpChart } from './helpers';
+import { BumpChartDataItem, TopGenresPerYearFromDb } from './types';
 
 const TopGenresPerYearLayout: React.FC = () => {
 	const [year, setYear] = useState(1985);
@@ -15,8 +15,9 @@ const TopGenresPerYearLayout: React.FC = () => {
 	const getTopGenresStartingYear = async () => {
 		setFetching(true);
 		try {
-			const { data } = await localAxios.get<TopGenresPerYear[]>(`/topGenresPerYear/${year}`);
-			const formattedData = formatTopGenresForBumpChart(data);
+			const { data } = await localAxios.get<TopGenresPerYearFromDb[]>(`/topGenresPerYear/${year}`);
+			const cleanedUpData = cleanDbDataFromUnnecessaryBs(data);
+			const formattedData = formatTopGenresForBumpChart(cleanedUpData);
 			setTopList(formattedData);
 		} catch (error) {
 			return [];
