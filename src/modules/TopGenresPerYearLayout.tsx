@@ -9,13 +9,14 @@ import { BumpChartDataItem, TopGenresPerYearFromDb } from './types';
 
 const TopGenresPerYearLayout: React.FC = () => {
 	const [year, setYear] = useState(1985);
+	const [yearRange, setYearRange] = useState(5);
 	const [isFetching, setFetching] = useState(false);
 	const [topGenresList, setTopList] = useState<BumpChartDataItem[]>([]);
 
 	const getTopGenresStartingYear = async () => {
 		setFetching(true);
 		try {
-			const { data } = await localAxios.get<TopGenresPerYearFromDb[]>(`/topGenresPerYear/${year}`);
+			const { data } = await localAxios.get<TopGenresPerYearFromDb[]>(`/topGenresPerYear/${year}?yearRange=${yearRange}`);
 			const cleanedUpData = cleanDbDataFromUnnecessaryBs(data);
 			const formattedData = formatTopGenresForBumpChart(cleanedUpData);
 			setTopList(formattedData);
@@ -30,17 +31,24 @@ const TopGenresPerYearLayout: React.FC = () => {
 		setYear(+event.target.value);
 	};
 
+	const onChangeYearRange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setYearRange(+event.target.value);
+	};
+
 	return (
 		<>
 			<Container>
 				<Jumbotron style={{ padding: '3rem 2rem' }}>
 					<h1>Jak zmieniała się popularność gatunków?</h1>
-					<h6>Wybierz rok i zobacz, jak preferencje słuchaczy zmieniały się w ciągu 5 lat od wybranego roku</h6>
+					<h6>Wybierz rok i zobacz, jak preferencje słuchaczy zmieniały się w ciągu {yearRange} lat od wybranego roku</h6>
 				</Jumbotron>
 
 				<Row>
-					<Col xs={9}>
+					<Col xs={7}>
 						<Slider label='Wybierz rok początkowy' min={1960} max={2016} step={1} value={year} onChange={onChangeYear} />
+					</Col>
+					<Col xs={2}>
+						<Slider label='Długość przedziału' min={4} max={8} step={1} value={yearRange} onChange={onChangeYearRange} />
 					</Col>
 					<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
 						<Button style={{ width: 200, padding: '10px inherit' }} onClick={getTopGenresStartingYear}>

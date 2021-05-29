@@ -39,8 +39,10 @@ router.post('/topGenresPerYear/:year', async (req, res) => {
 
 router.get('/topGenresPerYear/:startYear', async (req, res) => {
 	const startYear = parseInt(req.params.startYear);
+	const yearRange = parseInt(req.query.yearRange);
+
 	try {
-		const x = await TopGenresPerYear.find({ year: { $gte: startYear, $lt: startYear + 5 } });
+		const x = await TopGenresPerYear.find({ year: { $gte: startYear, $lt: startYear + yearRange } });
 		res.send(x).end();
 	} catch (e) {
 		console.log(e);
