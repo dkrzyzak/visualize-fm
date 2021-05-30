@@ -26,10 +26,8 @@ interface MultiGenreSelectProps {
 }
 
 const initialValues: MultiSelectOption[] = [
-	{ name: 'pop', label: 'pop', value: 'pop' },
-	{ name: 'hip-hop', label: 'hip-hop', value: 'hip-hop' },
-	{ name: 'rock', label: 'rock', value: 'rock' },
-	{ name: 'country', label: 'country', value: 'country' },
+	{ name: 'alternative', label: 'alternative', value: 'alternative' },
+	{ name: 'indie', label: 'indie', value: 'indie' },
 ];
 
 const MultiGenreSelect: React.FC<MultiGenreSelectProps> = ({ onChange }) => {
