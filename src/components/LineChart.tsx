@@ -28,7 +28,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 					tickSize: 5,
 					tickPadding: 5,
 					tickRotation: 0,
-					legend: 'transportation',
+					legend: 'rok',
 					legendOffset: 36,
 					legendPosition: 'middle',
 				}}

@@ -62,6 +62,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 	useEffect(() => {
 		getTopGenresStartingYear();
 		getAllTimeGenresSummary();
+		onSelectedGenresChange(['pop', 'rock', 'country', 'hip-hop']);
 		// eslint-disable-next-line
 	}, []);
 
