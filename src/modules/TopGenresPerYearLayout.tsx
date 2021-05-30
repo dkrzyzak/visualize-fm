@@ -8,6 +8,7 @@ import BumpChart from '../components/BumpChart';
 import LineChart from '../components/LineChart';
 import { cleanDbDataFromUnnecessaryBs, formatTopGenresForBumpChart } from './helpers';
 import { BumpChartDataItem, TopGenresPerYearFromDb } from './types';
+import MultiGenreSelect from '../components/MultiGenreSelect';
 
 const TopGenresPerYearLayout: React.FC = () => {
 	const [year, setYear] = useState(1985);
@@ -16,6 +17,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 	const [isFetchingAllTime, setFetchingAllTime] = useState(false);
 	const [topGenresList, setTopList] = useState<BumpChartDataItem[]>([]);
 	const [allTimeComparisonList, setAllTimeList] = useState<Serie[]>([]);
+	const [allTimeLimitedData, setAllTimeLimitedData] = useState<Serie[]>([]);
 
 	const getTopGenresStartingYear = async () => {
 		setFetching(true);
@@ -52,9 +54,15 @@ const TopGenresPerYearLayout: React.FC = () => {
 		setYearRange(+event.target.value);
 	};
 
+	const onSelectedGenresChange = (selectedGenres: string[]) => {
+		const limitedData = allTimeComparisonList.filter((genre) => selectedGenres.includes(genre.id as string));
+		setAllTimeLimitedData(limitedData);
+	};
+
 	useEffect(() => {
 		getTopGenresStartingYear();
 		getAllTimeGenresSummary();
+		// eslint-disable-next-line
 	}, []);
 
 	return (
@@ -91,10 +99,10 @@ const TopGenresPerYearLayout: React.FC = () => {
 			<Container>
 				<Jumbotron style={{ padding: '3rem 2rem' }}>
 					<h1>Work In Progress</h1>
-					<h6>&nbsp;</h6>
+					<MultiGenreSelect onChange={onSelectedGenresChange} />
 				</Jumbotron>
 
-				<Row>
+				{/* <Row>
 					<Col xs={7}></Col>
 					<Col xs={2}></Col>
 					<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -102,13 +110,13 @@ const TopGenresPerYearLayout: React.FC = () => {
 							Temp button
 						</Button>
 					</Col>
-				</Row>
+				</Row> */}
 			</Container>
 
 			<AsyncWrapper isFetching={isFetchingAllTime}>
 				{allTimeComparisonList.length > 0 && (
 					<div>
-						<LineChart data={allTimeComparisonList} />
+						<LineChart data={allTimeLimitedData} />
 					</div>
 				)}
 			</AsyncWrapper>

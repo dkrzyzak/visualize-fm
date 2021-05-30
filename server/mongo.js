@@ -23,9 +23,22 @@ const topGenresSchema = new Schema({
 	],
 });
 
-const TopGenresPerYear = mongoose.model('topGenresPerYear', topGenresSchema);
+const TopGenresPerYearModel = mongoose.model('topGenresPerYear', topGenresSchema);
+
+const allTimeGenrePositions = new Schema({
+	id: String,
+	data: [
+		{
+			x: Number,
+			y: Number,
+		},
+	],
+});
+
+const AllTimeGenrePositionsModel = mongoose.model('allTimeGenresPositions', allTimeGenrePositions);
 
 module.exports = {
 	db,
-	TopGenresPerYear,
+	TopGenresPerYearModel,
+	AllTimeGenrePositionsModel,
 };

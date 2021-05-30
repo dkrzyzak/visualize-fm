@@ -12,7 +12,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 				data={data}
 				colors={{ scheme: 'category10' }}
 				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-				yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: false, reverse: true }}
+				yScale={{ type: 'linear', min: 1, max: 15, stacked: false, reverse: true }}
 				yFormat=' >-.2f'
 				xScale={{
 					type: 'time',
@@ -41,13 +41,17 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 				// 	legendOffset: -40,
 				// 	legendPosition: 'middle',
 				// }}
-				pointSize={1}
+				pointSize={0}
 				isInteractive={true}
 				pointColor={{ theme: 'background' }}
-				pointBorderWidth={2}
+				pointBorderWidth={5}
 				pointBorderColor={{ from: 'serieColor' }}
 				pointLabelYOffset={-12}
 				useMesh={true}
+				theme={{
+					fontSize: 16,
+					// fontFamily: 'Makhina',
+				}}
 				legends={[
 					{
 						anchor: 'bottom-right',
