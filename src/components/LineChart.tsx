@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResponsiveLine, Serie } from '@nivo/line';
+import { Point, ResponsiveLine, Serie } from '@nivo/line';
 import { BasicTooltip } from '@nivo/tooltip';
 
 interface LineChartProps {
@@ -11,7 +11,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 		<div style={{ width: 1200, height: 500, marginTop: 50, marginBottom: 200, marginLeft: -30 }}>
 			<ResponsiveLine
 				data={data}
-				colors={{ scheme: 'category10' }}
+				colors={(d: Point) => colorsForGenres[d.id]}
 				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
 				yScale={{ type: 'linear', min: 1, max: 16, stacked: false, reverse: true }}
 				yFormat=' >-.2f'
@@ -48,6 +48,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 				pointBorderWidth={5}
 				pointBorderColor={{ from: 'serieColor' }}
 				pointLabelYOffset={-12}
+				lineWidth={4}
 				useMesh={true}
 				legends={[
 					{
@@ -98,6 +99,25 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 			/>
 		</div>
 	);
+};
+
+const colorsForGenres: any = {
+	pop: '#ffd92f',
+	'hip-hop': '#2ca02c',
+	rock: '#d62728 ',
+	country: '#ff7f0e',
+	'r&b': '#9467bd',
+	jazz: '#8c564b',
+	funk: '#21913b',
+	soul: '#a6d854',
+	disco: '#e377c2',
+	folk: '#7f7f7f',
+	dance: '#e4ba32',
+	metal: '#08050e',
+	'new wave': '#bcbd22',
+	indie: '#1f77b4',
+	alternative: '#f0027f',
+	electronic: '#17becf',
 };
 
 export default LineChart;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MultiSelect, Option } from 'react-rainbow-components';
 import { MultiSelectOption } from 'react-rainbow-components/components/MultiSelect';
 
@@ -33,33 +33,34 @@ const initialValues: MultiSelectOption[] = [
 ];
 
 const MultiGenreSelect: React.FC<MultiGenreSelectProps> = ({ onChange }) => {
-	const [value, setValue] = useState<MultiSelectOption[]>(initialValues);
+	const [selectedGenres, setSelectedGenres] = useState<MultiSelectOption[]>(initialValues);
 
-	const handleSelectChange = (value: MultiSelectOption[]) => {
-		console.log(value);
-		const selectedGenres = value.map(({ name }) => name as string);
-		onChange(selectedGenres);
-
-		if (value.length === 0) {
+	const handleSelectChange = (newValue: MultiSelectOption[]) => {
+		if (newValue.length === 0) {
 			return alert('przynajmniej jeden gatunek musi być zaznaczony');
 		}
 
-		if (value.length > 10) {
+		if (newValue.length > 10) {
 			return alert('możesz wybrać max 10 elementów');
 		}
 
-		setValue(value);
+		setSelectedGenres(newValue);
 	};
+
+	useEffect(() => {
+		onChange(selectedGenres.map(({ name }) => name as string));
+	}, [selectedGenres, onChange]);
 
 	return (
 		<MultiSelect
 			label='Zestaw wybrane gatunki'
 			placeholder='Wybierz gatunki'
 			className='rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto'
-			value={value}
+			value={selectedGenres}
 			onChange={handleSelectChange}
 			bottomHelpText='Możesz wybrać do 10 gatunków'
 			variant='chip'
+			chipVariant='outline-brand'
 			showCheckbox
 		>
 			{genresForComparison.map((genreName, idx) => (

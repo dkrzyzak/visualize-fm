@@ -9,7 +9,8 @@ const wrapperStyles: React.CSSProperties = {
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',
-	marginTop: 200,
+	marginTop: 100,
+	marginBottom: 100,
 };
 
 const spinnerStyles: React.CSSProperties = {

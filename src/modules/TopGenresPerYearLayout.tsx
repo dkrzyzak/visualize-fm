@@ -17,6 +17,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 	const [isFetchingAllTime, setFetchingAllTime] = useState(false);
 	const [topGenresList, setTopList] = useState<Serie[]>([]);
 	const [allTimeFullList, setAllTimeFullList] = useState<Serie[]>([]);
+	const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 	const [allTimeFilteredData, setAllTimeFilteredData] = useState<Serie[]>([]);
 
 	const getTopGenresStartingYear = async () => {
@@ -54,11 +55,6 @@ const TopGenresPerYearLayout: React.FC = () => {
 		setYearRange(+event.target.value);
 	};
 
-	const onSelectedGenresChange = (selectedGenres: string[]) => {
-		const limitedData = allTimeFullList.filter((genre) => selectedGenres.includes(genre.id as string));
-		setAllTimeFilteredData(limitedData);
-	};
-
 	useEffect(() => {
 		getTopGenresStartingYear();
 		getAllTimeGenresSummary();
@@ -66,8 +62,9 @@ const TopGenresPerYearLayout: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		onSelectedGenresChange(['pop', 'rock', 'country', 'hip-hop']);
-	}, [allTimeFullList]);
+		const limitedData = allTimeFullList.filter((genre) => selectedGenres.includes(genre.id as string));
+		setAllTimeFilteredData(limitedData);
+	}, [allTimeFullList, selectedGenres]);
 
 	return (
 		<>
@@ -103,12 +100,12 @@ const TopGenresPerYearLayout: React.FC = () => {
 			<Container>
 				<Jumbotron style={{ padding: '3rem 2rem' }}>
 					<h1>Pełny przedział czasowy</h1>
-					<MultiGenreSelect onChange={onSelectedGenresChange} />
+					<MultiGenreSelect onChange={setSelectedGenres} />
 				</Jumbotron>
 			</Container>
 
 			<AsyncWrapper isFetching={isFetchingAllTime}>
-				{allTimeFullList.length > 0 && (
+				{allTimeFilteredData.length > 0 && (
 					<div>
 						<LineChart data={allTimeFilteredData} />
 					</div>
