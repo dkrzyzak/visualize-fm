@@ -53,7 +53,7 @@ const formatDataForLineChart = (allYearsList) => {
 		const data = [];
 		allYearsList.forEach((yearSummary) => {
 			const genreIndex = yearSummary.genres.findIndex((genre) => genre.genre === genreName);
-			const y = genreIndex < 0 || genreIndex > 14 ? 15 : genreIndex + 1;
+			const y = genreIndex < 0 || genreIndex > 15 ? 16 : genreIndex + 1;
 
 			data.push({
 				x: yearSummary.year,

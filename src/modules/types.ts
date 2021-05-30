@@ -56,11 +56,3 @@ export interface TopGenresPerYear {
 	year: number;
 	genres: SummedGenre[];
 }
-
-export interface BumpChartDataItem {
-	id: string;
-	data: Array<{
-		x: number;
-		y: number;
-	}>;
-}

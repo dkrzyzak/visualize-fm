@@ -1,16 +1,8 @@
 import dayjs from 'dayjs';
+import { Serie } from '@nivo/line';
 import axios from 'axios';
 import localAxios from '../axios';
-import {
-	BillboardTrack,
-	BillboardTrackApi,
-	BumpChartDataItem,
-	Genres,
-	PieChartDataItem,
-	TagsData,
-	TopGenresPerYear,
-	TopGenresPerYearFromDb,
-} from './types';
+import { BillboardTrack, BillboardTrackApi, Genres, PieChartDataItem, TagsData, TopGenresPerYear, TopGenresPerYearFromDb } from './types';
 
 const lastfmAPIKey = process.env.REACT_APP_LASTFM_API_KEY;
 
@@ -161,7 +153,7 @@ export const cleanDbDataFromUnnecessaryBs = (topGenresPerYearList: TopGenresPerY
 	});
 };
 
-export const formatTopGenresForBumpChart = (topList: TopGenresPerYear[]): BumpChartDataItem[] => {
+export const formatTopGenresForBumpChart = (topList: TopGenresPerYear[]): Serie[] => {
 	// tworzę kopię oryginalnej listy (przyda się kawałek później)
 	const copyOfTopList: TopGenresPerYear[] = JSON.parse(JSON.stringify(topList));
 

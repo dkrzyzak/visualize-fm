@@ -7,7 +7,7 @@ import AsyncWrapper from '../components/AsyncWrapper';
 import BumpChart from '../components/BumpChart';
 import LineChart from '../components/LineChart';
 import { cleanDbDataFromUnnecessaryBs, formatTopGenresForBumpChart } from './helpers';
-import { BumpChartDataItem, TopGenresPerYearFromDb } from './types';
+import { TopGenresPerYearFromDb } from './types';
 import MultiGenreSelect from '../components/MultiGenreSelect';
 
 const TopGenresPerYearLayout: React.FC = () => {
@@ -15,9 +15,9 @@ const TopGenresPerYearLayout: React.FC = () => {
 	const [yearRange, setYearRange] = useState(5);
 	const [isFetching, setFetching] = useState(false);
 	const [isFetchingAllTime, setFetchingAllTime] = useState(false);
-	const [topGenresList, setTopList] = useState<BumpChartDataItem[]>([]);
-	const [allTimeComparisonList, setAllTimeList] = useState<Serie[]>([]);
-	const [allTimeLimitedData, setAllTimeLimitedData] = useState<Serie[]>([]);
+	const [topGenresList, setTopList] = useState<Serie[]>([]);
+	const [allTimeFullList, setAllTimeFullList] = useState<Serie[]>([]);
+	const [allTimeFilteredData, setAllTimeFilteredData] = useState<Serie[]>([]);
 
 	const getTopGenresStartingYear = async () => {
 		setFetching(true);
@@ -38,7 +38,7 @@ const TopGenresPerYearLayout: React.FC = () => {
 
 		try {
 			const { data } = await localAxios.get<Serie[]>(`/topGenresPerYear`);
-			setAllTimeList(data);
+			setAllTimeFullList(data);
 		} catch (e) {
 			console.log(e);
 		} finally {
@@ -55,16 +55,19 @@ const TopGenresPerYearLayout: React.FC = () => {
 	};
 
 	const onSelectedGenresChange = (selectedGenres: string[]) => {
-		const limitedData = allTimeComparisonList.filter((genre) => selectedGenres.includes(genre.id as string));
-		setAllTimeLimitedData(limitedData);
+		const limitedData = allTimeFullList.filter((genre) => selectedGenres.includes(genre.id as string));
+		setAllTimeFilteredData(limitedData);
 	};
 
 	useEffect(() => {
 		getTopGenresStartingYear();
 		getAllTimeGenresSummary();
-		onSelectedGenresChange(['pop', 'rock', 'country', 'hip-hop']);
 		// eslint-disable-next-line
 	}, []);
+
+	useEffect(() => {
+		onSelectedGenresChange(['pop', 'rock', 'country', 'hip-hop']);
+	}, [allTimeFullList]);
 
 	return (
 		<>
@@ -99,25 +102,15 @@ const TopGenresPerYearLayout: React.FC = () => {
 
 			<Container>
 				<Jumbotron style={{ padding: '3rem 2rem' }}>
-					<h1>Work In Progress</h1>
+					<h1>Pełny przedział czasowy</h1>
 					<MultiGenreSelect onChange={onSelectedGenresChange} />
 				</Jumbotron>
-
-				{/* <Row>
-					<Col xs={7}></Col>
-					<Col xs={2}></Col>
-					<Col xs={3} style={{ display: 'flex', alignItems: 'flex-end' }}>
-						<Button style={{ width: 200, padding: '10px inherit' }} onClick={getTopGenresStartingYear}>
-							Temp button
-						</Button>
-					</Col>
-				</Row> */}
 			</Container>
 
 			<AsyncWrapper isFetching={isFetchingAllTime}>
-				{allTimeComparisonList.length > 0 && (
+				{allTimeFullList.length > 0 && (
 					<div>
-						<LineChart data={allTimeLimitedData} />
+						<LineChart data={allTimeFilteredData} />
 					</div>
 				)}
 			</AsyncWrapper>

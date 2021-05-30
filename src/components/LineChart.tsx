@@ -1,5 +1,6 @@
 import React from 'react';
 import { ResponsiveLine, Serie } from '@nivo/line';
+import { BasicTooltip } from '@nivo/tooltip';
 
 interface LineChartProps {
 	data: Serie[];
@@ -12,7 +13,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 				data={data}
 				colors={{ scheme: 'category10' }}
 				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-				yScale={{ type: 'linear', min: 1, max: 15, stacked: false, reverse: true }}
+				yScale={{ type: 'linear', min: 1, max: 16, stacked: false, reverse: true }}
 				yFormat=' >-.2f'
 				xScale={{
 					type: 'time',
@@ -48,10 +49,6 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 				pointBorderColor={{ from: 'serieColor' }}
 				pointLabelYOffset={-12}
 				useMesh={true}
-				theme={{
-					fontSize: 16,
-					// fontFamily: 'Makhina',
-				}}
 				legends={[
 					{
 						anchor: 'bottom-right',
@@ -78,6 +75,26 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 						],
 					},
 				]}
+				theme={{
+					fontSize: 16,
+					tooltip: {
+						container: {
+							background: '#222',
+						},
+					},
+				}}
+				tooltip={({ point }) => (
+					<BasicTooltip
+						id={
+							<div style={{ color: point.serieColor, textAlign: 'center' }}>
+								<h5 style={{ fontVariant: 'simplified', textShadow: '1px 1px 1px #ccc' }}>{point.serieId}</h5>#
+								<strong>{point.data.y}</strong> w roku <strong>{point.data.xFormatted}</strong>
+							</div>
+						}
+						// enableChip={true}
+						color={point.serieColor}
+					/>
+				)}
 			/>
 		</div>
 	);

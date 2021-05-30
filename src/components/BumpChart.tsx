@@ -1,9 +1,9 @@
 import { ResponsiveBump } from '@nivo/bump';
+import { Serie } from '@nivo/line';
 import React from 'react';
-import { BumpChartDataItem } from '../modules/types';
 
 interface BumpChartProps {
-	data: BumpChartDataItem[];
+	data: Serie[];
 }
 
 const BumpChart: React.FC<BumpChartProps> = ({ data }) => {
@@ -30,7 +30,6 @@ const BumpChart: React.FC<BumpChartProps> = ({ data }) => {
 				pointBorderColor={{ from: 'serie.color' }}
 				theme={{
 					fontSize: 20,
-					// fontFamily: 'Makhina',
 				}}
 				axisTop={{
 					tickSize: 5,
