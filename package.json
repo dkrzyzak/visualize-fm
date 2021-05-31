@@ -8,7 +8,6 @@
 		"@nivo/core": "^0.69.0",
 		"@nivo/line": "^0.69.0",
 		"@nivo/pie": "^0.69.0",
-		"@nivo/tooltip": "^0.69.0",
 		"axios": "^0.21.1",
 		"billboard-top-100": "^2.5.9",
 		"cors": "^2.8.5",
@@ -30,7 +29,6 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"server": "nodemon server/server.js"
 	},

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Point, ResponsiveLine, Serie } from '@nivo/line';
-import { BasicTooltip } from '@nivo/tooltip';
 
 interface LineChartProps {
 	data: Serie[];
@@ -85,16 +84,10 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 					},
 				}}
 				tooltip={({ point }) => (
-					<BasicTooltip
-						id={
-							<div style={{ color: point.serieColor, textAlign: 'center' }}>
-								<h5 style={{ fontVariant: 'simplified', textShadow: '1px 1px 1px #ccc' }}>{point.serieId}</h5>#
-								<strong>{point.data.y}</strong> w roku <strong>{point.data.xFormatted}</strong>
-							</div>
-						}
-						// enableChip={true}
-						color={point.serieColor}
-					/>
+					<div style={{ color: point.serieColor, backgroundColor: '#222', padding: '5px 10px', textAlign: 'center' }}>
+						<h5 style={{ fontVariant: 'simplified', textShadow: '1px 1px 1px #ccc' }}>{point.serieId}</h5>#
+						<strong>{point.data.y}</strong> w roku <strong>{point.data.xFormatted}</strong>
+					</div>
 				)}
 			/>
 		</div>
