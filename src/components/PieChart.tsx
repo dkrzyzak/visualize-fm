@@ -60,8 +60,14 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
 				]}
 				theme={{
 					fontSize: 20,
-					// fontFamily: 'Makhina',
+					tooltip: {
+						container: {
+							backgroundColor: '#222',
+							color: '#eee',
+						},
+					},
 				}}
+				isInteractive={true}
 			/>
 		</div>
 	);

@@ -21,6 +21,7 @@ const BumpChart: React.FC<BumpChartProps> = ({ data }) => {
 				colors={{ scheme: 'dark2' }}
 				{...(extraProps as any)}
 				inactiveOpacity={0.15}
+				isInteractive={true}
 				pointSize={10}
 				activePointSize={16}
 				inactivePointSize={0}
@@ -30,6 +31,13 @@ const BumpChart: React.FC<BumpChartProps> = ({ data }) => {
 				pointBorderColor={{ from: 'serie.color' }}
 				theme={{
 					fontSize: 20,
+					tooltip: {
+						container: {
+							backgroundColor: '#222',
+							color: '#eee',
+							fontWeight: 'bold',
+						},
+					},
 				}}
 				axisTop={{
 					tickSize: 5,
