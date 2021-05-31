@@ -62,8 +62,10 @@ const TopGenresPerYearLayout: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		setYear((prev) => prev - 1);
-	}, [yearRange]);
+		if (yearRange + year > 2021) {
+			setYear((prev) => prev - 1);
+		}
+	}, [yearRange, year]);
 
 	useEffect(() => {
 		const limitedData = allTimeFullList.filter((genre) => selectedGenres.includes(genre.id as string));
