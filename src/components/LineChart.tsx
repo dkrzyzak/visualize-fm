@@ -85,8 +85,15 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 				}}
 				tooltip={({ point }) => (
 					<div style={{ color: point.serieColor, backgroundColor: '#222', padding: '5px 10px', textAlign: 'center' }}>
-						<h5 style={{ fontVariant: 'simplified', textShadow: '1px 1px 1px #ccc' }}>{point.serieId}</h5>#
-						<strong>{point.data.y}</strong> w roku <strong>{point.data.xFormatted}</strong>
+						<h5 style={{ fontVariant: 'simplified', textShadow: '1px 1px 1px #ccc' }}>{point.serieId}</h5>
+						{point.data.y === 16 ? (
+							<strong>brak</strong>
+						) : (
+							<span>
+								#<strong>{point.data.y}</strong>
+							</span>
+						)}{' '}
+						w roku <strong>{point.data.xFormatted}</strong>
 					</div>
 				)}
 			/>
@@ -106,7 +113,7 @@ const colorsForGenres: any = {
 	disco: '#e377c2',
 	folk: '#7f7f7f',
 	dance: '#e4ba32',
-	metal: '#08050e',
+	metal: '#fc4e2a',
 	'new wave': '#bcbd22',
 	indie: '#1f77b4',
 	alternative: '#f0027f',
