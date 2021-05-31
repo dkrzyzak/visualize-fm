@@ -47,13 +47,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
 				fill={[
 					{
 						match: {
-							id: 'pop',
-						},
-						id: 'dots',
-					},
-					{
-						match: {
-							id: 'hip-hop',
+							id: 'other',
 						},
 						id: 'lines',
 					},
