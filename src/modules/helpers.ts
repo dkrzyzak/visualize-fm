@@ -60,6 +60,10 @@ export const fetch100 = async (startDate: Date): Promise<BillboardTrack[]> => {
 	const formattedDate = dayjs(startDate).format('YYYY-MM-DD');
 	const { data: billboardList } = await localAxios.get<BillboardTrackApi[]>(`/billboard100?date=${formattedDate}`);
 
+	if (!billboardList.length) {
+		alert('Nie udało się pobrać listy dla wybranego tygodnia. Spróbuj wybrać wcześniejszą datę.');
+	}
+
 	const dataWithTags = await Promise.all(
 		billboardList.map(async ({ artist, title, rank }) => {
 			// nie potrzebujemy wszystkich pól które dostarcza nam api, potrzebujemy tylko artist, title oraz rank
@@ -134,7 +138,12 @@ export const formatGenresToPieChartData = (genres: Genres, countOther = false, l
 	// wykonujemy tą dodatkową operację tylko jeśli faktycznie wyrzuciliśmy jakieś tagi z listy, ponieważ się nie kwalifikowały ze względu na ilość wystąpień
 	if (extraOthers > 0) {
 		const otherIdx = data.findIndex((el) => el.id === 'other');
-		data[otherIdx].value += extraOthers;
+
+		if (otherIdx === -1) {
+			data.push({ id: 'other', label: 'other', value: extraOthers });
+		} else {
+			data[otherIdx].value += extraOthers;
+		}
 	}
 
 	data.sort((a, b) => b.value - a.value);

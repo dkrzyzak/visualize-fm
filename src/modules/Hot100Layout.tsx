@@ -10,7 +10,7 @@ import { BillboardTrack } from './types';
 
 const minDate = dayjs('1958-08-04').toDate();
 
-const Top100Layout: React.FC = () => {
+const Hot100Layout: React.FC = () => {
 	const [startDate, setStartDate] = useState(new Date());
 	const [isFetching, setFetching] = useState(false);
 	const [fetchedList, setFetchedList] = useState<BillboardTrack[]>([]);
@@ -71,4 +71,4 @@ const Top100Layout: React.FC = () => {
 	);
 };
 
-export default Top100Layout;
+export default Hot100Layout;
